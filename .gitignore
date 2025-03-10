@@ -92,3 +92,4 @@ config.json        # Configuration files with sensitive data
 # Git Ignore Itself
 # ========================
 .gitignore         # Exclude itself from being ignored
+node_modules
