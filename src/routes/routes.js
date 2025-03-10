@@ -1,23 +1,22 @@
 const express = require("express");
+const {
+  getQueries,
+  createQuery,
+  updateQuery,
+  deleteQuery,
+} = require("../controllers/project.controllers.js");
+
 const router = express.Router();
-const {getDb} = require("../index.js");
 
-router.get("/", (req, res) => {
-    res.json({msg : "API is working."});
+router.get("/" , (req,res) =>{
+    res.json({mssg : "API is working"});
 });
 
-router.get('/books' ,async (req,res) => {
-    const db = await getDb();
-    db.collection('books')
-        .find()
-        .sort()
-        .toArray()
-        .then((book) =>  {
-            res.json(book);
-        })
-        .catch(() => {
-            res.json({error : "DB error while fetching."});
-        })
-});
+router.get("/queries", getQueries); //Fetch Query
+
+router.post("/queries", createQuery); // Create Query
+router.put("/queries/:id", updateQuery); // Update Query
+
+router.delete("/queries/:id", deleteQuery); // Delete Query
 
 module.exports = router;

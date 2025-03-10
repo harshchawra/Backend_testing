@@ -1,25 +1,16 @@
-const { MONGO_URI } = require("./config/config.js");
 const mongoose = require('mongoose');
+const Query = require("./models/user.model.js");
 
-let Dbconnect;
+const connectToDb = async () => {
+    try {
+        const conn = await mongoose.connect(process.env.MONGO_URL);
+        // console.log(`MongoDB connected: ${conn.connection.host}`);
+        // console.log(`Using database: ${conn.connection.name}`);
 
-module.exports = {
-    connectToDb: async (cb) => {
-        try {
-            const connection = await mongoose.connect(MONGO_URI);
-            Dbconnect = connection.connection;
-            // console.log("MongoDB Connected");
-            return cb();
-        } catch (err) {
-            // console.error("MongoDB Connection Error:", err);
-            return cb(err);
-        }
-    },
-
-    getDb: () => {
-        if (!Dbconnect) {
-            throw new Error("Database not initialized.");
-        }
-        return Dbconnect;
+    } catch (error) {
+        console.log("MongoDB connection error: ", error);
+        process.exit(1); // Exit on failure
     }
 };
+
+module.exports = connectToDb; 
