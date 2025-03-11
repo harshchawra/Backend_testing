@@ -85,7 +85,7 @@ const loginUser = async (req, res) => {
                 email: user.email,
                 role: user.role,
             },
-            JWT_token: token,
+            
         });
     } catch (error) {
         res
