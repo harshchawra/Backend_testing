@@ -1,4 +1,4 @@
-const Query = require("../models/user.model.js");
+import Query from '../models/query.model.js';
 
 // Fetch all queries
 const getQueries = async (req, res) => {
@@ -13,8 +13,19 @@ const getQueries = async (req, res) => {
 
 // Create a new query
 const createQuery = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized: User not found in request" });
+    }
     try {
-        const newQuery = new Query(req.body);
+        const newQuery = new Query({
+            type: req.body.type,
+            user: req.user.id, // Automatically store the authenticated user's ID
+            phone: req.body.phone,
+            location: req.body.location,
+            productName: req.body.productName,
+            description: req.body.description,
+            imageUrl:req.body.imageUrl
+        });
         const savedQuery = await newQuery.save();
         res.status(201).json({ message: "Query created successfully", query: savedQuery });
     } catch (err) {
@@ -48,4 +59,4 @@ const deleteQuery = async (req, res) => {
     }
 };
 
-module.exports = { getQueries, createQuery, updateQuery, deleteQuery };
+export { getQueries, createQuery, updateQuery, deleteQuery };

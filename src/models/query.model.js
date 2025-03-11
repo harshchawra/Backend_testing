@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const querySchema = new mongoose.Schema({
     type: {
@@ -6,12 +6,9 @@ const querySchema = new mongoose.Schema({
         enum: ['lost', 'found'],
         required: true
     },
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", // Reference to the User model
         required: true
     },
     phone: {
@@ -40,4 +37,4 @@ const querySchema = new mongoose.Schema({
 
 const Query = mongoose.model("Query", querySchema);
 
-module.exports = Query;
+export default Query;
