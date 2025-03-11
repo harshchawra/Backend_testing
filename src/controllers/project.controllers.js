@@ -3,9 +3,25 @@ import Query from '../models/query.model.js';
 // Fetch all queries
 const getQueries = async (req, res) => {
     try {
-        const queries = await Query.find();
-        console.log(queries);
+        const { type, location, status, productName, sort } = req.query;
+
+        let filters = {};
+
+        if (type) filters.type = type;
+        if (status) filters.status = status;
+
+        // Case-insensitive filtering for location & productName
+        if (location) filters.location = { $regex: new RegExp(location, "i") };
+        if (productName) filters.productName = { $regex: new RegExp(productName, "i") };
+
+        let sortOrder = sort === "asc" ? 1 : -1;
+
+        const queries = await Query.find(filters).sort({created : sortOrder});
+
+        // console.log(queries);
+        
         res.json(queries);
+
     } catch (err) {
         res.status(500).json({ error: "Failed to fetch queries", details: err });
     }
