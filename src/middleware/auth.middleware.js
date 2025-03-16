@@ -4,7 +4,7 @@ import User from '../models/auth.model.js';
 const authenticateUser = async (req, res, next) => {
     try {
         const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
-        // console.log(token);
+        console.log(token);
         if (!token) {
             return res.status(401).json({ error: "Unauthorized - No Token Provided" });
         }
